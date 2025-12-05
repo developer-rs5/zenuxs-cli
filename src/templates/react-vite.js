@@ -171,7 +171,12 @@ export default App
   
   // Create AuthContext if authUI is enabled
   if (authUI) {
-    const authContextContent = `import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'${
+    // Create the React import based on TypeScript or JavaScript
+    const reactImport = typescript ? 
+      `import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'` :
+      `import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'`;
+    
+    const authContextContent = `${reactImport}${
       typescript ? `
 interface UserInfo {
   sub?: string;
@@ -242,14 +247,14 @@ export const AuthProvider = ({ children }${typescript ? ': AuthProviderProps' : 
     const initOAuth = async () => {
       try {
         const config = {
-          clientId: '${projectName.replace(/\s+/g, '_').toLowerCase()}_client', // Replace with your actual client ID
+          clientId: 'f13975eff3604b2e', // This is only test client ID, get your at https://zenuxs.in/developers
           authServer: 'https://api.auth.zenuxs.in',
           redirectUri: \`\${window.location.origin}/callback\`,
           scopes: 'openid profile email',
           storage: 'localStorage',
           usePKCE: true,
           autoRefresh: true,
-          debug: ${process.env.NODE_ENV === 'development'},
+          debug: process.env.NODE_ENV === 'development',
           onBeforeLogin: () => {
             addDebugLog('Before login callback triggered');
             setLoading(true);
