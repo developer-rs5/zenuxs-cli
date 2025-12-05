@@ -129,7 +129,6 @@ function App() {
           <Route path="/zenuxs" element={<ZenuxsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/callback" element={<Callback />} />
           <Route 
             path="/dashboard" 
             element={
