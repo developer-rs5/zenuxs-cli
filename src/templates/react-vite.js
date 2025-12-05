@@ -1133,52 +1133,32 @@ export default ZenuxsPage
   
   // Create auth pages if authUI is true
   if (authUI) {
-    // Create Login page with Zenuxs OAuth
+    // Declare variables outside the if blocks
     let loginPage;
+    let registerPage;
+    let dashboardPage;
+    
+    // Create Login page with Zenuxs OAuth
     if (tailwind) {
-      registerPage = `import React, { useState } from 'react'
+      loginPage = `import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext.${ext}'
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    agreeToTerms: false
-  })
-  const [useZenuxsOAuth, setUseZenuxsOAuth] = useState(false)
+const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
+  const [useZenuxsOAuth, setUseZenuxsOAuth] = useState(true)
   const navigate = useNavigate()
   const { login, loading, error } = useAuth()
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }))
-  }
-
-  const handleSubmit = (e) => {
+  const handleTraditionalSubmit = (e) => {
     e.preventDefault()
-    
-    // Basic validation
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!')
-      return
-    }
-    
-    if (!formData.agreeToTerms) {
-      alert('Please agree to the terms and conditions')
-      return
-    }
-    
     // In a real app, you would make an API call here
-    console.log('Registration data:', formData)
+    console.log('Traditional login attempt:', { email, password, rememberMe })
     
-    // For demo purposes, redirect to login
-    navigate('/login')
+    // For demo purposes, redirect to dashboard
+    navigate('/dashboard')
   }
 
   const handleZenuxsLogin = (options = {}) => {
@@ -1188,34 +1168,34 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
-        <p className="text-gray-600 text-center mb-8">Get started with your free account</p>
+        <h1 className="text-3xl font-bold text-center mb-2">Welcome Back</h1>
+        <p className="text-gray-600 text-center mb-8">Sign in to your account</p>
         
         {/* OAuth Option */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium">Sign Up Method</h3>
+            <h3 className="text-lg font-medium">Login Method</h3>
             <div className="flex items-center">
-              <span className={\`mr-2 text-sm \${useZenuxsOAuth ? 'text-blue-600' : 'text-gray-500'}\`}>Traditional</span>
+              <span className="mr-2 text-sm \${useZenuxsOAuth ? 'text-blue-600' : 'text-gray-500'}">Traditional</span>
               <button
                 type="button"
                 className="relative inline-flex h-6 w-11 items-center rounded-full"
                 onClick={() => setUseZenuxsOAuth(!useZenuxsOAuth)}
               >
-                <span className="sr-only">Toggle sign up method</span>
+                <span className="sr-only">Toggle login method</span>
                 <span className={\`\${useZenuxsOAuth ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition\`} />
                 <span className={\`\${useZenuxsOAuth ? 'bg-blue-600' : 'bg-gray-300'} inline-block h-full w-full rounded-full\`} />
               </button>
-              <span className={\`ml-2 text-sm \${useZenuxsOAuth ? 'text-blue-600 font-medium' : 'text-gray-500'}\`}>Zenuxs OAuth</span>
+              <span className="ml-2 text-sm \${useZenuxsOAuth ? 'text-blue-600 font-medium' : 'text-gray-500'}">Zenuxs OAuth</span>
             </div>
           </div>
           
           {useZenuxsOAuth ? (
             <div className="space-y-4">
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="font-medium text-blue-800 mb-2">🔐 Secure OAuth Registration</h4>
+                <h4 className="font-medium text-blue-800 mb-2">🔐 Secure OAuth Login</h4>
                 <p className="text-sm text-blue-700 mb-4">
-                  Register using Zenuxs OAuth 2.0. This creates a Zenuxs account that you can use across multiple applications.
+                  Login using Zenuxs OAuth 2.0 with PKCE flow. Your credentials are handled securely by Zenuxs.
                 </p>
                 
                 <div className="space-y-3">
@@ -1224,7 +1204,7 @@ const Register = () => {
                     disabled={loading}
                     className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-200 disabled:opacity-50"
                   >
-                    {loading ? 'Redirecting...' : 'Register with Zenuxs OAuth'}
+                    {loading ? 'Redirecting...' : 'Login with Zenuxs OAuth'}
                   </button>
                   
                   <button
@@ -1232,49 +1212,33 @@ const Register = () => {
                     disabled={loading}
                     className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition duration-200 disabled:opacity-50"
                   >
-                    {loading ? 'Opening...' : 'Register with Popup'}
+                    {loading ? 'Opening...' : 'Login with Popup'}
                   </button>
                 </div>
               </div>
               
               <div className="text-center">
                 <p className="text-sm text-gray-500">
-                  Already have a Zenuxs account?{' '}
-                  <Link to="/login" className="text-blue-600 hover:underline">
-                    Sign in instead
-                  </Link>
+                  Don't have a Zenuxs account?{' '}
+                  <a href="https://zenuxs.in/register" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                    Create one
+                  </a>
                 </p>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-              
+            <form onSubmit={handleTraditionalSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Email Address
                 </label>
                 <input
                   type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   placeholder="you@example.com"
-                  required
+                  required={!useZenuxsOAuth}
                 />
               </div>
               
@@ -1284,52 +1248,38 @@ const Register = () => {
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   placeholder="••••••••"
-                  required
+                  required={!useZenuxsOAuth}
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-              
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="agree-to-terms"
-                  name="agreeToTerms"
-                  checked={formData.agreeToTerms}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                />
-                <label htmlFor="agree-to-terms" className="ml-2 text-sm text-gray-600">
-                  I agree to the{' '}
-                  <a href="#" className="text-blue-600 hover:text-blue-800">
-                    Terms & Conditions
-                  </a>
-                </label>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="remember-me"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
+                    Remember me
+                  </label>
+                </div>
+                
+                <a href="#" className="text-sm text-blue-600 hover:text-blue-800">
+                  Forgot password?
+                </a>
               </div>
               
               <button
                 type="submit"
-                className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition duration-200"
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-200"
               >
-                Create Account
+                Sign In
               </button>
             </form>
           )}
@@ -1343,9 +1293,9 @@ const Register = () => {
         
         <div className="mt-8 pt-8 border-t border-gray-200">
           <p className="text-center text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 font-medium hover:text-blue-800">
-              Sign in
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-600 font-medium hover:text-blue-800">
+              Sign up
             </Link>
           </p>
         </div>
@@ -1357,7 +1307,7 @@ const Register = () => {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or sign up with</span>
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
               </div>
             </div>
             
@@ -1376,7 +1326,7 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Login
 `;
     } else {
       loginPage = `import React, { useState } from 'react'
@@ -1416,16 +1366,16 @@ const Login = () => {
           <div className="method-toggle">
             <h3 className="method-title">Login Method</h3>
             <div className="toggle-container">
-              <span className="toggle-label ${useZenuxsOAuth ? 'toggle-label-inactive' : ''}">Traditional</span>
+              <span className="toggle-label \${useZenuxsOAuth ? 'toggle-label-inactive' : ''}">Traditional</span>
               <button
                 type="button"
                 className="toggle-button"
                 onClick={() => setUseZenuxsOAuth(!useZenuxsOAuth)}
               >
-                <span className="toggle-slider ${useZenuxsOAuth ? 'toggle-slider-active' : ''}" />
-                <span className="toggle-track ${useZenuxsOAuth ? 'toggle-track-active' : ''}" />
+                <span className="toggle-slider \${useZenuxsOAuth ? 'toggle-slider-active' : ''}" />
+                <span className="toggle-track \${useZenuxsOAuth ? 'toggle-track-active' : ''}" />
               </button>
-              <span className="toggle-label ${useZenuxsOAuth ? 'toggle-label-active' : ''}">Zenuxs OAuth</span>
+              <span className="toggle-label \${useZenuxsOAuth ? 'toggle-label-active' : ''}">Zenuxs OAuth</span>
             </div>
           </div>
           
@@ -1934,7 +1884,6 @@ export default Login
     await fs.writeFile(`src/pages/Login.${ext}`, loginPage);
     
     // Create Register page with Zenuxs OAuth option
-    let registerPage;
     if (tailwind) {
       registerPage = `import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -1996,7 +1945,7 @@ const Register = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium">Sign Up Method</h3>
             <div className="flex items-center">
-              <span className={\`mr-2 text-sm \${useZenuxsOAuth ? 'text-blue-600' : 'text-gray-500'}\`}>Traditional</span>
+              <span className="mr-2 text-sm \${useZenuxsOAuth ? 'text-blue-600' : 'text-gray-500'}">Traditional</span>
               <button
                 type="button"
                 className="relative inline-flex h-6 w-11 items-center rounded-full"
@@ -2006,7 +1955,7 @@ const Register = () => {
                 <span className={\`\${useZenuxsOAuth ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition\`} />
                 <span className={\`\${useZenuxsOAuth ? 'bg-blue-600' : 'bg-gray-300'} inline-block h-full w-full rounded-full\`} />
               </button>
-              <span className={\`ml-2 text-sm \${useZenuxsOAuth ? 'text-blue-600 font-medium' : 'text-gray-500'}\`}>Zenuxs OAuth</span>
+              <span className="ml-2 text-sm \${useZenuxsOAuth ? 'text-blue-600 font-medium' : 'text-gray-500'}">Zenuxs OAuth</span>
             </div>
           </div>
           
@@ -2240,16 +2189,16 @@ const Register = () => {
           <div className="method-toggle">
             <h3 className="method-title">Sign Up Method</h3>
             <div className="toggle-container">
-              <span className="toggle-label ${useZenuxsOAuth ? 'toggle-label-inactive' : ''}">Traditional</span>
+              <span className="toggle-label \${useZenuxsOAuth ? 'toggle-label-inactive' : ''}">Traditional</span>
               <button
                 type="button"
                 className="toggle-button"
                 onClick={() => setUseZenuxsOAuth(!useZenuxsOAuth)}
               >
-                <span className="toggle-slider ${useZenuxsOAuth ? 'toggle-slider-active' : ''}" />
-                <span className="toggle-track ${useZenuxsOAuth ? 'toggle-track-active' : ''}" />
+                <span className="toggle-slider \${useZenuxsOAuth ? 'toggle-slider-active' : ''}" />
+                <span className="toggle-track \${useZenuxsOAuth ? 'toggle-track-active' : ''}" />
               </button>
-              <span className="toggle-label ${useZenuxsOAuth ? 'toggle-label-active' : ''}">Zenuxs OAuth</span>
+              <span className="toggle-label \${useZenuxsOAuth ? 'toggle-label-active' : ''}">Zenuxs OAuth</span>
             </div>
           </div>
           
@@ -2784,7 +2733,6 @@ export default Register
     await fs.writeFile(`src/pages/Register.${ext}`, registerPage);
     
     // Create Dashboard page with OAuth user info
-    let dashboardPage;
     if (tailwind) {
       dashboardPage = `import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -3058,7 +3006,7 @@ const Dashboard = () => {
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
                         <span className="text-yellow-600">📝</span>
-                      </div>
+                        </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
                           New comment
