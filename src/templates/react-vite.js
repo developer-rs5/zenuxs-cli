@@ -171,13 +171,8 @@ export default App
   
   // Create AuthContext if authUI is enabled
   if (authUI) {
-    // Create the React import based on TypeScript or JavaScript
-    const reactImport = typescript ? 
-      `import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'` :
-      `import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'`;
-    
-    const authContextContent = `${reactImport}${
-      typescript ? `
+    const authContextContent = `import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+${typescript ? `
 interface UserInfo {
   sub?: string;
   email?: string;
@@ -209,9 +204,9 @@ interface AuthContextType {
 }
 
 interface AuthProviderProps {
-  children: ReactNode;
-}` : ''
-    }
+  children: React.ReactNode;
+}
+` : ''}
 
 const AuthContext = createContext${typescript ? '<AuthContextType | undefined>' : ''}(undefined);
 
@@ -230,9 +225,9 @@ export const AuthProvider = ({ children }${typescript ? ': AuthProviderProps' : 
   const [sessionState, setSessionState] = useState${typescript ? '<SessionState | null>' : ''}(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState${typescript ? '<string | null>' : ''}(null);
-  const [debugLogs, setDebugLogs] = useState${typescript ? '<Array<{timestamp: string, message: string, data?: string}>>' : '([])'}([]);
+  const [debugLogs, setDebugLogs] = useState([]);
 
-  const addDebugLog = useCallback((message${typescript ? ': string' : ''}, data = null) => {
+  const addDebugLog = useCallback((message${typescript ? ': string' : ''}, data${typescript ? ': any' : ''} = null) => {
     const timestamp = new Date().toLocaleTimeString();
     const logEntry = {
       timestamp,
@@ -254,7 +249,7 @@ export const AuthProvider = ({ children }${typescript ? ': AuthProviderProps' : 
           storage: 'localStorage',
           usePKCE: true,
           autoRefresh: true,
-          debug: process.env.NODE_ENV === 'development',
+          debug: import.meta.env.DEV,
           onBeforeLogin: () => {
             addDebugLog('Before login callback triggered');
             setLoading(true);
