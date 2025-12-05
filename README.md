@@ -1,158 +1,152 @@
-# 🚀 create-zenuxs-app  
-A powerful CLI tool to scaffold modern, production-ready web applications using the **Zenuxs ecosystem**.  
-Whether you're building a frontend, backend, or a complete full-stack powerhouse — this CLI has your back.
+# create-zenuxs-app 🚀
+
+A powerful CLI tool to scaffold modern web applications using the **Zenuxs ecosystem**.  
+Clean structure, fast setup, and flexible customization for any modern stack.
 
 ---
 
 ## ✨ Features
 
-### 🔹 Frontend
-- React + Vite  
-- Next.js  
-- Optional TailwindCSS  
-- Optional TypeScript  
-- Pre-built authentication UI (JWT-based)
-
-### 🔹 Backend
-- Express or Fastify  
-- MongoDB (Easy-Mongoo), MySQL, PostgreSQL  
-- Authentication (Access + Refresh tokens)  
-- Logging, rate limiting & structured project setup  
-
-### 🔹 Full-Stack
-- Auto-connected frontend ↔ backend integration  
-- Shared auth flow  
-- Optional Docker containerization  
-- Seamless developer experience  
+- **Frontend**: React + Vite or Next.js  
+- **Backend**: Express or Fastify  
+- **Database Support**:  
+  - MongoDB (with optional Easy-Mongoo integration)  
+  - MySQL  
+  - PostgreSQL  
+- **Authentication**: JWT-based authentication template  
+- **Styling**: Optional TailwindCSS setup  
+- **Type Safety**: TypeScript support  
+- **Full-Stack Mode**: Auto-configures both frontend + backend folders  
 
 ---
 
 ## 🚀 Quick Start
 
-### Using NPX
+Run the CLI:
+
 ```bash
 npx create-zenuxs-app my-project
 ```
 
-### Or install globally
-```bash
-npm install -g create-zenuxs-app
-create-zenuxs-app my-project
-```
+Or directly:
 
----
-
-## 📖 Usage
-
-### Basic
 ```bash
 create-zenuxs-app <project-name>
 ```
 
-### Options
-```bash
-# Frontend only
-create-zenuxs-app my-app --frontend
+The CLI will guide you through:
 
-# Backend only
-create-zenuxs-app my-api --backend
-
-# Full-stack project
-create-zenuxs-app my-fullstack --fullstack
-
-# Show version
-create-zenuxs-app --version
-```
+1. Project type → **Frontend**, **Backend**, **Full-Stack**  
+2. Framework selection  
+3. Database options  
+4. Optional features (TS, Tailwind, Auth, etc.)
 
 ---
 
-## 🎯 Project Types
+## 📁 Project Structure
 
-### 1. Frontend
-- **React + Vite** → Fast dev, optimized builds  
-- **Next.js** → Full framework with routing, SSR/SSG  
-- Extra options: TailwindCSS, TypeScript, Auth UI
-
-### 2. Backend
-- **Express** → Community favorite  
-- **Fastify** → High-performance alternative  
-- Features:
-  - JWT Authentication  
-  - Easy-Mongoo / MySQL / PostgreSQL setup  
-  - Request logging, validation, rate limits  
-
-### 3. Full-Stack
-- Ready-made frontend + backend  
-- API auto-wiring  
-- Shared configuration  
-- Optional Docker support  
-
----
-
-## 🗂️ Project Structure
+### **Frontend (React + Vite)**
 
 ```
 my-project/
-├── frontend/          # Frontend app
-│   ├── src/
-│   ├── public/
-│   └── package.json
-├── backend/           # Backend app
-│   ├── src/
-│   ├── config/
-│   └── package.json
-├── docker-compose.yml # Optional Docker setup
-└── README.md          # Project documentation
+├── src/
+│   ├── components/
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   └── ZenuxsPage.jsx
+│   └── styles/
+├── public/
+├── package.json
+└── vite.config.js
 ```
 
 ---
 
-## 🔧 Technologies
+### **Backend (Express)**
 
-### Frontend
-React • Next.js • Vite • TailwindCSS • TypeScript  
-
-### Backend  
-Express • Fastify • Easy-Mongoo  
-
-### Databases  
-MongoDB • MySQL • PostgreSQL  
-
-### Auth  
-JWT • Refresh tokens • bcrypt  
-
-### Tooling  
-ESLint • Prettier • Docker  
+```
+my-project/
+├── src/
+│   ├── routes/
+│   ├── controllers/
+│   ├── middlewares/
+│   └── config/
+├── server.js
+├── package.json
+└── .env
+```
 
 ---
 
-## 🔗 Zenuxs Ecosystem
+### **Full-Stack Layout**
 
-- **Zenuxs Accounts:** https://zenuxs.in  
-- **Easy-Mongoo:** https://easy-mongoo.zenuxs.in  
-- **HMAX Security:** https://hmax.zenuxs.in  
-- **Docs:** https://docs.zenuxs.in  
+```
+my-project/
+├── frontend/  (React or Next.js)
+├── backend/   (Express or Fastify)
+└── README.md
+```
 
 ---
 
-## 🤝 Contributing
+## 🌐 Zenuxs Ecosystem
 
-Contributions are welcome!  
-Please check out the **Contributing Guide** before submitting PRs.
+- Zenuxs Accounts: https://zenuxs.in  
+- Easy-Mongoo: https://easy-mongoo.zenuxs.in  
+- HMAX Security: https://hmax.zenuxs.in  
+
+---
+
+## 🛠️ Development Setup
+
+Clone the repository:
+
+```bash
+git clone <repository>
+cd create-zenuxs-app
+npm install
+```
+
+Link globally:
+
+```bash
+npm link
+```
+
+Test locally:
+
+```bash
+create-zenuxs-app test-project
+# or
+node index.js my-project
+```
+
+---
+
+## 📦 Installation & Testing
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Link globally:
+
+```bash
+npm link
+```
+
+3. Test the CLI:
+
+```bash
+create-zenuxs-app my-test-project
+```
 
 ---
 
 ## 📄 License
-Released under the **MIT License**.
 
----
+**MIT License**
 
-## 📞 Support
-
-- **Issues:** GitHub Issues  
-- **Email:** support@zenuxs.in  
-- **Discord:** Join our community  
-
----
-
-### Made with ❤️ by the Zenuxs Team
+Built with ❤️ by the **Zenuxs Team**  
