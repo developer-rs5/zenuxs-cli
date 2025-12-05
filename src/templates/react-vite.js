@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 export async function generateReactVite(config) {
   const { projectName, typescript = true, tailwind = true, authUI = false } = config;
   const ext = typescript ? 'tsx' : 'jsx';
-  const configExt = typescript ? 'ts' : 'js';
+  const configExt = typescript ? 'tsx' : 'jsx';
   
   // Create package.json
   const packageJson = {
