@@ -129,7 +129,7 @@ function App() {
           <Route path="/zenuxs" element={<ZenuxsPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route 
+          <Route  
             path="/dashboard" 
             element={
               <PrivateRoute>
